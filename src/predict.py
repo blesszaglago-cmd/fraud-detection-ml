@@ -13,7 +13,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODEL_PATH = BASE_DIR / "models" / "fraud_model.pkl"
-SCALER_PATH = BASE_DIR / "data" / "processed" / "scaler.pkl"
+SCALER_PATH = BASE_DIR / "models" / "scaler.pkl"
 
 
 def load_artifacts():
@@ -37,14 +37,11 @@ def predict(transaction: dict):
     """
     model, scaler = load_artifacts()
 
-    # Build a DataFrame with the right column order
     feature_order = ["Time"] + [f"V{i}" for i in range(1, 29)] + ["Amount"]
     df = pd.DataFrame([transaction])[feature_order]
 
-    # Scale Time and Amount (same as training)
     df[["Time", "Amount"]] = scaler.transform(df[["Time", "Amount"]])
 
-    # Predict
     prediction = model.predict(df)[0]
     probability = model.predict_proba(df)[0][1]
 
@@ -52,14 +49,12 @@ def predict(transaction: dict):
 
 
 def main():
-    # Load a sample from the raw data to demo
     raw = pd.read_csv(BASE_DIR / "data" / "creditcard.csv")
 
     print("=" * 50)
     print("FRAUD DETECTION DEMO")
     print("=" * 50)
 
-    # Test one real fraud and one real normal
     for label_name, label_value in [("NORMAL", 0), ("FRAUD", 1)]:
         sample = raw[raw["Class"] == label_value].iloc[0]
         transaction = sample.drop("Class").to_dict()

@@ -2,9 +2,6 @@
 data/creditcard.csv
 data/processed/
 
-# Models
-models/*.pkl
-
 # Python
 __pycache__/
 *.pyc

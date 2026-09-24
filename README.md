@@ -2,7 +2,20 @@
 
 A machine learning system that detects fraudulent credit card transactions with 98.26% ROC-AUC on real-world data.
 
+## Live API
+
+This project includes a FastAPI service that predicts fraud on new transactions.
+
+**Local:** `uvicorn main:app --reload` → http://127.0.0.1:8000/docs
+
+**Example request:**
+```json
+{"Time":0.0,"V1":-1.3598,"Amount":149.62}
+
 ## The Problem
+> **Note:** The dataset (`creditcard.csv`, 150 MB) is not included in this repo due to GitHub's 100 MB file size limit. Download it from [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) and place it in `data/` before running the training scripts.
+
+> **API:** A live FastAPI service is available at `/predict` (see `main.py`). Deployed on Vercel.
 
 Credit card fraud costs the global economy over $30 billion annually. Rule-based systems fail against new fraud patterns. This project uses supervised learning on 284,807 real transactions to build an adaptive detection system.
 

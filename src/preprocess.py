@@ -6,7 +6,7 @@ Prepares the fraud dataset for training:
 - Splits into stratified train/test sets
 - Applies SMOTE to the training set only
 
-Saves the processed arrays to data/processed/ for reuse.
+Saves the processed arrays and the scaler.
 """
 
 import pandas as pd
@@ -21,7 +21,8 @@ from imblearn.over_sampling import SMOTE
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_PATH = BASE_DIR / "data" / "creditcard.csv"
 PROCESSED_DIR = BASE_DIR / "data" / "processed"
-SCALER_PATH = PROCESSED_DIR / "scaler.pkl"
+MODELS_DIR = BASE_DIR / "models"
+SCALER_PATH = MODELS_DIR / "scaler.pkl"
 
 
 def load_data():
@@ -42,7 +43,8 @@ def preprocess():
     X = X.copy()
     X[["Time", "Amount"]] = scaler.fit_transform(X[["Time", "Amount"]])
 
-    # Save the scaler so we can use it in predict.py
+    # Save the scaler in models/
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     joblib.dump(scaler, SCALER_PATH)
 
