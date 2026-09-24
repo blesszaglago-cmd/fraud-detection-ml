@@ -5,6 +5,3 @@ pandas
 numpy
 joblib
 pydantic
-imbalanced-learn
-matplotlib
-seaborn
