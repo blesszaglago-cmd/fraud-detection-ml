@@ -13,13 +13,11 @@ import pandas as pd
 from pathlib import Path
 
 
-# ---------- Paths ----------
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "models" / "fraud_model.pkl"
 SCALER_PATH = BASE_DIR / "models" / "scaler.pkl"
 
 
-# ---------- Input Schema ----------
 class TransactionInput(BaseModel):
     Time: float
     V1: float
@@ -53,7 +51,6 @@ class TransactionInput(BaseModel):
     Amount: float
 
 
-# ---------- Load Artifacts at Startup ----------
 try:
     model = joblib.load(MODEL_PATH)
     scaler = joblib.load(SCALER_PATH)
@@ -61,7 +58,6 @@ except Exception as e:
     raise RuntimeError(f"Failed to load model or scaler: {e}")
 
 
-# ---------- App ----------
 app = FastAPI(
     title="Fraud Detection API",
     description="Predicts whether a credit card transaction is fraudulent.",
@@ -81,16 +77,11 @@ def read_root():
 def predict_fraud(transaction: TransactionInput):
     try:
         data = transaction.dict()
-
         feature_order = ["Time"] + [f"V{i}" for i in range(1, 29)] + ["Amount"]
         df = pd.DataFrame([data])[feature_order]
-
-        # Scale Time and Amount (same scaler used at training)
         df[["Time", "Amount"]] = scaler.transform(df[["Time", "Amount"]])
-
         prediction = model.predict(df)[0]
         probability = model.predict_proba(df)[0][1]
-
         return {
             "is_fraud": bool(prediction),
             "fraud_probability": round(float(probability), 4),

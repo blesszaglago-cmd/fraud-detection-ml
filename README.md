@@ -6,8 +6,9 @@ A machine learning system that detects fraudulent credit card transactions with 
 
 This project includes a FastAPI service that predicts fraud on new transactions.
 
-**Local:** `uvicorn main:app --reload` → http://127.0.0.1:8000/docs
+**Local only:** `uvicorn main:app --reload` → http://127.0.0.1:8000/docs
 
+*(Vercel deployment currently inactive — the API runs locally.)*
 **Example request:**
 ```json
 {"Time":0.0,"V1":-1.3598,"Amount":149.62}
