@@ -9,6 +9,11 @@ This project includes a FastAPI service that predicts fraud on new transactions.
 **Local only:** `uvicorn main:app --reload` → http://127.0.0.1:8000/docs
 
 *(Vercel deployment currently inactive — the API runs locally.)*
+
+**Example request:**
+```json
+{"Time":0.0,"V1":-1.3598,"Amount":149.62}
+
 **Example request:**
 ```json
 {"Time":0.0,"V1":-1.3598,"Amount":149.62}
